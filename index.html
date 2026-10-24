@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APK 发布与推广 · 从 92 个平台到 10 个动作</title>
+<style>
+:root{
+  --bg:#f5f6f8; --card:#fff; --ink:#15171c; --sub:#5d6470; --mute:#8b929e;
+  --line:#e5e7eb; --shadow:0 1px 2px rgba(16,24,40,.05), 0 8px 24px -14px rgba(16,24,40,.14);
+  --accent:#4f46e5; --accent-soft:#eef0ff;
+  --now:#0f9d58; --next:#2563eb; --later:#8b929e; --passive:#7c3aed; --cut:#c2410c;
+  --tool:#4f46e5; --audio:#0d9488; --tv:#c2410c; --cn:#d93f34;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);line-height:1.6;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:1160px;margin:0 auto;padding:0 22px 90px}
+
+/* ===== 顶栏 ===== */
+.nav{position:sticky;top:0;z-index:50;background:rgba(245,246,248,.97);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid transparent;transition:border-color .25s,box-shadow .25s}
+.nav.stuck{border-bottom-color:var(--line);box-shadow:0 1px 12px rgba(16,24,40,.05)}
+.nav-in{max-width:1160px;margin:0 auto;padding:0 22px;height:56px;display:flex;align-items:center;gap:6px}
+.nav-brand{font-size:13px;font-weight:700;letter-spacing:-.01em;margin-right:14px;white-space:nowrap;
+  max-width:0;overflow:hidden;opacity:0;transition:max-width .28s ease,opacity .2s,margin .28s ease}
+.nav.stuck .nav-brand{max-width:200px;opacity:1}
+.nav-brand i{font-style:normal;color:var(--accent)}
+.nav a{font-size:12.5px;color:var(--sub);text-decoration:none;padding:6px 11px;border-radius:7px;
+  white-space:nowrap;transition:.16s}
+.nav a:hover{color:var(--ink);background:#fff}
+.nav a.on{color:var(--accent);background:var(--accent-soft);font-weight:600}
+
+/* ===== Hero ===== */
+.hero{padding:52px 0 8px}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--accent);background:var(--accent-soft);
+  padding:5px 11px;border-radius:100px;font-weight:600}
+.eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--accent);display:block;animation:pulse 2.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.8)}}
+h1{font-size:clamp(26px,3.6vw,38px);line-height:1.24;margin:16px 0 14px;letter-spacing:-.025em;font-weight:700}
+h1 em{font-style:normal;color:var(--accent);font-variant-numeric:tabular-nums}
+.lede{color:var(--sub);font-size:15px;max-width:690px;margin:0}
+
+/* ===== 数字 ===== */
+.bignum{display:flex;align-items:center;gap:12px;margin:26px 0 0;flex-wrap:wrap}
+.bn{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:13px 19px;
+  box-shadow:var(--shadow);text-align:center;min-width:106px;transition:transform .18s}
+.bn:hover{transform:translateY(-2px)}
+.bn b{display:block;font-size:28px;line-height:1.1;letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:var(--mute)}
+.bn span{font-size:11px;color:var(--mute)}
+.bn.hi{border-color:#c7d2fe;background:linear-gradient(180deg,#fbfbff,#fff)}
+.bn.hi b{color:var(--now)}
+.bn-arrow{font-size:20px;color:#c9ccd4}
+.bn-note{font-size:12.5px;color:var(--sub);max-width:330px;line-height:1.6}
+
+/* ===== 区块 ===== */
+.sec{padding-top:52px;scroll-margin-top:74px}
+.sec-hd{margin-bottom:18px}
+.sec-no{font-size:11px;font-weight:700;letter-spacing:.12em;color:#c3c8d2;text-transform:uppercase}
+.sec h2{font-size:22px;letter-spacing:-.02em;margin:3px 0 6px;font-weight:700}
+.sec .sub{font-size:13px;color:var(--mute);margin:0}
+.divider{height:1px;background:var(--line);margin-top:52px}
+
+/* ===== 判断卡 ===== */
+.judge{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.jd{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:15px 16px;
+  box-shadow:var(--shadow);animation:rise .45s cubic-bezier(.22,.68,.35,1) both}
+.jd:nth-child(2){animation-delay:.07s}
+.jd:nth-child(3){animation-delay:.14s}
+.jd h3{margin:0 0 6px;font-size:13px;font-weight:700;color:#b91c1c;display:flex;gap:6px;align-items:baseline;flex-wrap:wrap}
+.jd h3 span{font-size:9.5px;background:#fef2f2;color:#b91c1c;padding:1.5px 6px;border-radius:4px;font-weight:700;letter-spacing:.03em}
+.jd p{margin:0;font-size:12px;color:var(--sub);line-height:1.68}
+.jd p b{color:var(--ink);font-weight:650}
+@keyframes rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+
+/* ===== 四象限 ===== */
+.quad{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:26px}
+.q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 16px;
+  box-shadow:var(--shadow);position:relative;overflow:hidden;transition:border-color .18s}
+.q:hover{border-color:#d8dbe2}
+.q::before{content:"";position:absolute;inset:0 auto 0 0;width:3px}
+.q.q1::before{background:var(--now)} .q.q2::before{background:var(--next)}
+.q.q3::before{background:var(--later)} .q.q4::before{background:var(--cut)}
+.q-hd{display:flex;align-items:baseline;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.q-hd b{font-size:13px;font-weight:700}
+.q-hd span{font-size:10.5px;color:var(--mute)}
+.q-hd em{margin-left:auto;font-style:normal;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:5px;white-space:nowrap}
+.q1 .q-hd em{background:#e9f7ef;color:var(--now)}
+.q2 .q-hd em{background:#eaf1fd;color:var(--next)}
+.q3 .q-hd em{background:#f1f2f5;color:#6b7280}
+.q4 .q-hd em{background:#fdf0e9;color:var(--cut)}
+.qlist{display:flex;flex-wrap:wrap;gap:5px}
+.tg{font-size:11.5px;padding:2.5px 8px;border-radius:6px;background:#f5f6f8;color:var(--sub);
+  border:1px solid #eceef2;transition:all .16s;cursor:default}
+.tg:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tg.cn{background:#fdf2f1;border-color:#fadbd8;color:#b91c1c}
+.tg.cn:hover{background:var(--cn);border-color:var(--cn);color:#fff}
+
+/* ===== 筛选 ===== */
+.bar{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.search{position:relative;flex:1 1 210px;max-width:290px}
+.search input{width:100%;padding:9px 13px 9px 34px;border:1px solid var(--line);border-radius:9px;
+  background:var(--card);font:inherit;font-size:13px;color:var(--ink);outline:none;transition:.18s}
+.search input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,70,229,.1)}
+.search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);opacity:.4}
+.chip{appearance:none;font:inherit;font-size:12px;font-weight:500;cursor:pointer;
+  border:1px solid var(--line);background:var(--card);color:var(--sub);padding:5px 11px;
+  border-radius:100px;transition:.16s}
+.chip:hover{border-color:#c9ccd4;color:var(--ink)}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip .n{opacity:.55;margin-left:4px;font-variant-numeric:tabular-nums}
+
+/* ===== 表 ===== */
+.tbl{background:var(--card);border:1px solid var(--line);border-radius:13px;overflow:hidden;box-shadow:var(--shadow)}
+.tr{display:grid;grid-template-columns:178px 96px 74px 1fr;gap:12px;padding:11px 16px;
+  border-bottom:1px solid var(--line);align-items:start;font-size:13px}
+.tr:last-child{border-bottom:0}
+.tr.hd{background:#fafbfc;font-size:11px;color:var(--mute);font-weight:600;letter-spacing:.04em;
+  text-transform:uppercase}
+.tr:not(.hd){transition:background .14s}
+.tr:not(.hd):hover{background:#fafbfc}
+.tr .nm{font-weight:600;font-size:12.5px;line-height:1.45}
+.tr .ct{font-size:11px;color:var(--mute);line-height:1.5}
+.v{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:5px;white-space:nowrap;display:inline-block}
+.v.now{background:#e9f7ef;color:var(--now)}
+.v.next{background:#eaf1fd;color:var(--next)}
+.v.later{background:#f1f2f5;color:#6b7280}
+.v.passive{background:#f3eeff;color:var(--passive)}
+.v.cut{background:#fdf0e9;color:var(--cut)}
+.tr .wy{font-size:11.5px;color:var(--sub);line-height:1.55}
+
+/* ===== 泳道 ===== */
+.lanes{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:start}
+.lane{background:var(--card);border:1px solid var(--line);border-radius:15px;overflow:hidden;
+  box-shadow:var(--shadow);animation:rise .5s cubic-bezier(.22,.68,.35,1) both}
+.lane:nth-child(2){animation-delay:.08s}
+.lane:nth-child(3){animation-delay:.16s}
+.lane-hd{padding:14px 16px 12px;border-bottom:1px solid var(--line);position:relative}
+.lane-hd::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--tool)}
+.lane.a .lane-hd::before{background:var(--audio)}
+.lane.t .lane-hd::before{background:var(--tv)}
+.lane-hd h3{margin:0 0 3px;font-size:14.5px;font-weight:700;letter-spacing:-.01em}
+.lane-hd p{margin:0;font-size:11px;color:var(--mute);line-height:1.5}
+
+.blk{padding:13px 16px}
+.blk + .blk{border-top:1px solid var(--line)}
+.blk-t{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--mute);margin:0 0 8px;display:flex;align-items:center;gap:6px}
+.blk-t::after{content:"";flex:1;height:1px;background:var(--line)}
+.blk-t.warn{color:#b91c1c}
+
+.row{display:flex;gap:8px;padding:6px 0;font-size:12.5px;align-items:flex-start}
+.row + .row{border-top:1px dashed #f0f1f4}
+.p{flex:0 0 21px;height:16px;border-radius:4px;font-size:9px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;color:#fff;margin-top:2px;letter-spacing:.02em}
+.p.p0{background:var(--now)} .p.p1{background:var(--next)} .p.p2{background:var(--later)}
+.row .tx{flex:1;min-width:0}
+.row .tx b{font-weight:650;display:block;line-height:1.4;font-size:12.5px}
+.row .tx small{color:var(--mute);font-size:11px;line-height:1.45;display:block;margin-top:1px}
+.no{background:#fef2f2;border:1px solid #fecaca;border-radius:9px;padding:10px 12px;
+  font-size:11.5px;color:#991b1b;line-height:1.55;margin-bottom:10px}
+.no b{display:block;margin-bottom:2px;color:#7f1d1d}
+.danger{background:#fff7ed;border:1px solid #fed7aa;border-radius:9px;padding:10px 12px;
+  font-size:11.5px;color:#9a3412;line-height:1.55;margin-top:10px}
+.danger b{display:block;margin-bottom:2px;color:#7c2d12}
+
+/* ===== 基建 ===== */
+.todo{display:grid;grid-template-columns:repeat(auto-fit,minmax(206px,1fr));gap:10px}
+.ti{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 14px;
+  box-shadow:var(--shadow);display:flex;gap:10px;transition:transform .18s,border-color .18s}
+.ti:hover{transform:translateY(-2px);border-color:#d8dbe2}
+.ti .num{flex:0 0 21px;height:21px;border-radius:50%;background:var(--accent-soft);color:var(--accent);
+  font-size:10.5px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.ti .c b{font-size:12.5px;display:block;margin-bottom:2px;line-height:1.4}
+.ti .c small{font-size:11px;color:var(--sub);line-height:1.5}
+
+/* ===== 时间线 ===== */
+.tl{position:relative;padding-left:26px;margin-top:4px}
+.tl::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.tp{position:relative;padding:0 0 22px}
+.tp:last-child{padding-bottom:0}
+.tp::before{content:"";position:absolute;left:-24px;top:5px;width:11px;height:11px;border-radius:50%;
+  background:var(--card);border:2.5px solid var(--now)}
+.tp:nth-child(2)::before{border-color:var(--next)}
+.tp:nth-child(3)::before{border-color:var(--passive)}
+.tp:nth-child(4)::before{border-color:var(--tv)}
+.tp .w{font-size:10.5px;font-weight:700;color:var(--mute);letter-spacing:.06em;text-transform:uppercase}
+.tp .h{font-size:14px;font-weight:650;margin:1px 0 3px;letter-spacing:-.01em}
+.tp .d{font-size:12.5px;color:var(--sub);line-height:1.62}
+.tp .d b{color:var(--ink);font-weight:650}
+
+.foot{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-size:11.5px;color:var(--mute);line-height:1.85}
+.foot b{color:var(--sub)}
+.empty{text-align:center;color:var(--mute);padding:40px 0;font-size:13px}
+.hide{display:none!important}
+
+@media(max-width:960px){
+  .judge{grid-template-columns:1fr}
+  .lanes{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+  .wrap{padding:0 15px 70px}
+  .nav-in{padding:0 15px;overflow-x:auto}
+  .nav-brand{display:none}
+  .quad{grid-template-columns:1fr}
+  .tr{grid-template-columns:1fr 82px;gap:6px 10px}
+  .tr .ct{display:none}
+  .tr .wy{grid-column:1/-1;font-size:11px}
+  .tr.hd{display:none}
+  .bignum{gap:8px}
+  .bn{padding:10px 14px;min-width:86px}
+  .bn b{font-size:22px}
+  .bn-arrow{display:none}
+  .bn-note{max-width:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav-in">
+    <div class="nav-brand">92 → <i>10</i></div>
+    <a href="#s1" class="on">为什么砍</a>
+    <a href="#s2">砍哪些</a>
+    <a href="#s3">三类打法</a>
+    <a href="#s4">执行顺序</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="eyebrow"><i></i>基于《应用.xmind》92 个条目 + 三类 APK 实际情况</span>
+    <h1>你收集了 <em id="nTotal">92</em> 个平台，<br>现在真正要动的只有 <em id="nNow">10</em> 个</h1>
+    <p class="lede">这不是一份更全的清单，是一份能直接照着做的清单。你手上的三类 APK（工具 / 音频 / 影视）走的是三条完全不同的路，混着套会浪费钱和时间。下面从「为什么砍」讲到「什么时候做」。</p>
+
+    <div class="bignum">
+      <div class="bn"><b id="bnTotal">92</b><span>去重条目</span></div>
+      <div class="bn-arrow">→</div>
+      <div class="bn hi"><b id="bnNow">10</b><span>立刻要做</span></div>
+      <div class="bn"><b id="bnNext">8</b><span>软著后排期</span></div>
+      <div class="bn"><b id="bnRest">0</b><span>顺手 / 被动 / 砍</span></div>
+      <div class="bn-note">不到 <b id="pct">10%</b> 的平台值得你亲手提交。其余要么会自动找上门，要么已经不在了，要么得先有预算。</div>
+    </div>
+  </header>
+
+  <!-- ============ 1 ============ -->
+  <section class="sec" id="s1">
+    <div class="sec-hd">
+      <div class="sec-no">Part 01</div>
+      <h2>三个判断，先把虚火降下来</h2>
+      <p class="sub">这三条不纠正，后面每一步都会被带偏</p>
+    </div>
+
+    <div class="judge">
+      <div class="jd">
+        <h3><span>判断一</span>付费买量那套，你玩不起</h3>
+        <p>你写在「推广」备注里的冷启动 → 增长 → 稳定三阶段、UAC、AppLovin / Unity、信息流 + CPD，是<b>给有预算、有 LTV 模型的手游团队</b>写的。工具类 APK 的 ARPU 接近零，信息流起投几千到几万，买来的用户既不会付费也不会留存。这一步在你这里不是「小预算测试」，是纯亏。</p>
+      </div>
+      <div class="jd">
+        <h3><span>判断二</span>ASO 工具不是渠道</h3>
+        <p>七麦、点点、Sensor Tower、data.ai、AppTweak 这些是<b>看数据用的</b>，它不能给你带来一个下载。放进「发行」里会误导优先级。后五个是企业级年费产品，个人用免费版七麦或点点就够。AppGrowing 更是广告监测，和 ASO 无关。</p>
+      </div>
+      <div class="jd">
+        <h3><span>判断三</span>国外三方站会自己找上门</h3>
+        <p>APKPure、Uptodown、Aptoide 都是<b>爬虫抓 Google Play / GitHub 的包</b>自动上架，你手动提交反而慢。唯一例外是 APKMirror，只收知名应用，个人新包进不去。这三个从待办里划掉，收益照拿。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============ 2 ============ -->
+  <section class="sec" id="s2">
+    <div class="sec-hd">
+      <div class="sec-no">Part 02</div>
+      <h2>92 条逐项裁决</h2>
+      <p class="sub">先看四象限找感觉，再往下用筛选表核对每一项</p>
+    </div>
+
+    <div class="quad">
+      <div class="q q1">
+        <div class="q-hd"><b>高收益 · 低成本</b><span>免费，一个人就能做</span><em>立刻做</em></div>
+        <div class="qlist">
+          <span class="tg cn">酷安</span><span class="tg">GitHub Releases</span><span class="tg">F-Droid</span>
+          <span class="tg">IzzyOnDroid</span><span class="tg cn">V2EX</span><span class="tg cn">HelloGitHub</span>
+          <span class="tg cn">小众软件</span><span class="tg cn">B 站</span><span class="tg cn">LINUX DO</span>
+          <span class="tg cn">Telegram（影视类）</span>
+        </div>
+      </div>
+      <div class="q q2">
+        <div class="q-hd"><b>高收益 · 高成本</b><span>要资质或要时间</span><em>排期做</em></div>
+        <div class="qlist">
+          <span class="tg cn">华为 AppGallery</span><span class="tg cn">小米商店</span><span class="tg cn">OPPO 商店</span>
+          <span class="tg cn">vivo 商店</span><span class="tg cn">荣耀市场</span><span class="tg cn">应用宝</span>
+          <span class="tg">Google Play</span><span class="tg cn">恩山论坛（影视类）</span>
+        </div>
+      </div>
+      <div class="q q3">
+        <div class="q-hd"><b>低收益 · 低成本</b><span>顺手提交，不指望量</span><em>有余力再说</em></div>
+        <div class="qlist">
+          <span class="tg cn">少数派</span><span class="tg cn">掘金</span><span class="tg cn">CSDN</span>
+          <span class="tg cn">开源中国</span><span class="tg cn">奇客 Solidot</span><span class="tg cn">吾爱破解</span>
+          <span class="tg cn">新趣集</span><span class="tg">Gitee</span><span class="tg">Product Hunt</span>
+          <span class="tg">X / Twitter</span><span class="tg">YouTube</span><span class="tg cn">小红书</span>
+        </div>
+      </div>
+      <div class="q q4">
+        <div class="q-hd"><b>低收益 · 高成本</b><span>要钱、要团队、或已失效</span><em>直接砍</em></div>
+        <div class="qlist">
+          <span class="tg">91 / PP / 豌豆荚</span><span class="tg">安智 / 搜狗 / UC</span><span class="tg cn">机锋网</span>
+          <span class="tg">Amazon Appstore</span><span class="tg">QooApp</span><span class="tg">APKMirror</span>
+          <span class="tg">Sensor Tower / data.ai</span><span class="tg">AppTweak / Mobile Action</span>
+          <span class="tg">信息流 / 搜索 / 联盟广告</span><span class="tg">地推 / 展会</span>
+          <span class="tg">LinkedIn</span><span class="tg">Instagram</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bar">
+      <div class="search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="搜平台名…" autocomplete="off">
+      </div>
+      <div class="chips" id="chips"></div>
+    </div>
+
+    <div class="tbl">
+      <div class="tr hd"><div>平台</div><div>类别</div><div>裁决</div><div>理由</div></div>
+      <div id="rows"></div>
+    </div>
+    <div class="empty hide" id="empty">没有匹配项</div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============ 3 ============ -->
+  <section class="sec" id="s3">
+    <div class="sec-hd">
+      <div class="sec-no">Part 03</div>
+      <h2>三类应用，三套打法</h2>
+      <p class="sub">同样是「上架」，工具类靠商店，影视类只能靠社区和私域</p>
+    </div>
+
+    <div class="lanes">
+      <section class="lane">
+        <div class="lane-hd">
+          <h3>工具 / 自动化类</h3>
+          <p>AutoClicker 这类 · 无内容版权风险 · 商店友好</p>
+        </div>
+        <div class="blk">
+          <p class="blk-t">上架（按顺序做）</p>
+          <div class="row"><span class="p p0">P0</span><div class="tx"><b>GitHub Releases</b><small>所有渠道的源头。没有它，IzzyOnDroid 和其他收录站都不会收。</small></div></div>
+          <div class="row"><span class="p p0">P0</span><div class="tx"><b>酷安</b><small>国内安卓工具第一分发位，开发者认证免费。</small></div></div>
+          <div class="row"><span class="p p0">P0</span><div class="tx"><b>F-Droid</b><small>开源工具标配。硬门槛：FOSS 许可证 + 不依赖 GMS / Firebase 等专有组件。</small></div></div>
+          <div class="row"><span class="p p1">P1</span><div class="tx"><b>IzzyOnDroid</b><small>F-Droid 补充仓，接受闭源和带 GMS 的应用，只要 GitHub 有 Release。免费。</small></div></div>
+          <div class="row"><span class="p p1">P1</span><div class="tx"><b>华为 AppGallery</b><small>国内正规商店里对个人开发者最友好的一个，实名即可注册。</small></div></div>
+          <div class="row"><span class="p p2">P2</span><div class="tx"><b>小米 / OPPO / vivo / 荣耀</b><small>需要软件著作权证书。自办软著约 30–60 个工作日，加急另收费。</small></div></div>
+          <div class="row"><span class="p p2">P2</span><div class="tx"><b>Google Play</b><small>工具类过审几乎无门槛，一次性注册费。只做海外增量，别当主渠道。</small></div></div>
+        </div>
+        <div class="blk">
+          <p class="blk-t">宣传（按转化排）</p>
+          <div class="row"><span class="p p0">P0</span><div class="tx"><b>酷安 · 应用动态</b><small>版本更新顺手发一条，国内工具类最省力的持续曝光。</small></div></div>
+          <div class="row"><span class="p p0">P0</span><div class="tx"><b>V2EX「分享创造」</b><small>一篇帖能吃半年搜索长尾。写清解决什么问题，别只贴下载链接。</small></div></div>
+          <div class="row"><span class="p p0">P0</span><div class="tx"><b>HelloGitHub 自荐</b><small>中文开源圈曝光最强的一站，只收开源项目——你刚好符合。</small></div></div>
+          <div class="row"><span class="p p1">P1</span><div class="tx"><b>小众软件</b><small>接受作者自荐，长尾流量好，适合「解决一个具体小问题」的工具。</small></div></div>
+          <div class="row"><span class="p p1">P1</span><div class="tx"><b>B 站</b><small>30 秒演示视频比任何文案都有效，且能被长期搜索到。</small></div></div>
+          <div class="row"><span class="p p1">P1</span><div class="tx"><b>LINUX DO</b><small>工具与 AI 类讨论热度高，发帖容忍度比 V2EX 宽松。</small></div></div>
+          <div class="row"><span class="p p2">P2</span><div class="tx"><b>新趣集 / Solo / 电鸭</b><small>独立开发者社区，适合首发互推，量小但精准。</small></div></div>
+        </div>
+      </section>
+
+      <section class="lane a">
+        <div class="lane-hd">
+          <h3>音频 / 媒体工具类</h3>
+          <p>本地处理 · 无版权风险 · 可吃 HiFi 小众圈</p>
+        </div>
+        <div class="blk">
+          <p class="blk-t">上架</p>
+          <div class="row"><span class="p p0">P0</span><div class="tx"><b>GitHub Releases</b><small>同样是一切的前提，同时存一份 SHA-256 摘要。</small></div></div>
+          <div class="row"><span class="p p0">P0</span><div class="tx"><b>酷安</b><small>音频工具在酷安的讨论度高于普通工具，评论区常出真实需求。</small></div></div>
+          <div class="row"><span class="p p1">P1</span><div class="tx"><b>F-Droid + IzzyOnDroid</b><small>音频处理类开源项目收录率很高，两个都提，互不冲突。</small></div></div>
+          <div class="row"><span class="p p1">P1</span><div class="tx"><b>Google Play</b><small>媒体工具类审核最松的一档，几乎没有额外资质要求。</small></div></div>
+          <div class="row"><span class="p p2">P2</span><div class="tx"><b>华为 / 小米商店</b><small>需软著。音频工具属「实用工具」类目，过审压力小。</small></div></div>
+        </div>
+        <div class="blk">
+          <p class="blk-t">宣传</p>
+          <div class="row"><span class="p p0">P0</span><div class="tx"><b>耳机大家坛（erji.net）</b><small>国内 HiFi 圈最老最硬的池子。你导图里漏了这个，但动态范围、假 hi-res、codec transparency 这些话题只有在那儿有人接得住。</small></div></div>
+          <div class="row"><span class="p p0">P0</span><div class="tx"><b>B 站 HiFi / 音频区</b><small>用波形、频谱、AB 对比做内容，比其他区更容易做出专业感。</small></div></div>
+          <div class="row"><span class="p p1">P1</span><div class="tx"><b>什么值得买</b><small>音频器材类有自然流量，适合写「工具 + 器材」组合评测。</small></div></div>
+          <div class="row"><span class="p p1">P1</span><div class="tx"><b>Chiphell</b><small>用户消费力高、爱折腾，对技术细节容忍度高。</small></div></div>
+          <div class="row"><span class="p p2">P2</span><div class="tx"><b>V2EX / LINUX DO / 酷安</b><small>和工具类同一套打法，文案可以复用。</small></div></div>
+        </div>
+      </section>
+
+      <section class="lane t">
+        <div class="lane-hd">
+          <h3>影视 / TVBox 聚合类</h3>
+          <p>内容版权风险 · 走不了任何正规商店</p>
+        </div>
+        <div class="blk">
+          <p class="blk-t warn">先说清楚这条红线</p>
+          <div class="no"><b>不要往任何正规商店提交</b>Google Play 会按版权投诉下架并可能封号；国内商店需要《信息网络传播视听节目许可证》，个人拿不到；酷安这类社区商店一旦被举报就下架，还可能连累账号。</div>
+          <p class="blk-t">上架</p>
+          <div class="row"><span class="p p0">P0</span><div class="tx"><b>GitHub Releases</b><small>唯一的主分发口。TVBox 圈用户已经习惯来这里拿包。</small></div></div>
+          <div class="row"><span class="p p0">P0</span><div class="tx"><b>自建落地页</b><small>稳定域名 + 版本列表 + 校验值。GitHub Pages 免费，但要准备备用。</small></div></div>
+          <div class="row"><span class="p p0">P0</span><div class="tx"><b>Telegram 频道</b><small>版本推送 + 失效公告的唯一可靠通道，这个圈子的默认基建。</small></div></div>
+          <div class="row"><span class="p p1">P1</span><div class="tx"><b>网盘分发</b><small>夸克 / 蓝奏云，解决国内直连 GitHub 慢。多备几个防失效。</small></div></div>
+        </div>
+        <div class="blk">
+          <p class="blk-t">宣传</p>
+          <div class="row"><span class="p p0">P0</span><div class="tx"><b>恩山无线论坛</b><small>TVBox / 盒子类用户最集中的中文论坛。发布帖 + 持续回帖维护。</small></div></div>
+          <div class="row"><span class="p p0">P0</span><div class="tx"><b>TG 频道互推</b><small>这个圈子的增长基本靠频道之间互相转发，找同量级频道换推。</small></div></div>
+          <div class="row"><span class="p p1">P1</span><div class="tx"><b>智能电视网 / ZNDS</b><small>盒子用户聚集地，教程类内容容易被收录。</small></div></div>
+          <div class="row"><span class="p p1">P1</span><div class="tx"><b>B 站盒子测评 UP 主</b><small>不用自己起号，直接寄样机或私信给做电视盒子测评的 UP 主。</small></div></div>
+          <div class="row"><span class="p p2">P2</span><div class="tx"><b>什么值得买 / 贴吧</b><small>盒子吧、投影仪吧，长尾但稳定。</small></div></div>
+          <div class="danger"><b>身份隔离</b>影视类项目不要用真实身份注册开发者账号，不要接支付，不要让三个项目共用同一个 GitHub / TG 身份——一处被端会全部连坐。</div>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============ 4 ============ -->
+  <section class="sec" id="s4">
+    <div class="sec-hd">
+      <div class="sec-no">Part 04</div>
+      <h2>开工前先补 5 件基建，然后按这个顺序走</h2>
+      <p class="sub">基建不做，后面每个渠道都要返工一次</p>
+    </div>
+
+    <div class="todo">
+      <div class="ti"><span class="num">1</span><div class="c"><b>版本号与包名一次定死</b><small>不要一版换一个包名。渠道收录、用户升级、商店认的都是包名，改一次等于重来。</small></div></div>
+      <div class="ti"><span class="num">2</span><div class="c"><b>每个 Release 附 SHA-256</b><small>你星标里的 YuqiEngine 就在这么做。工具类用户会核对，是低成本建立信任的方式。</small></div></div>
+      <div class="ti"><span class="num">3</span><div class="c"><b>应用内更新走 GitHub API</b><small>不要依赖商店推送。免费、稳定，还能绕开商店审核周期。</small></div></div>
+      <div class="ti"><span class="num">4</span><div class="c"><b>一个不换的下载落地页</b><small>所有宣传都指向同一个 URL。渠道会变、帖子会沉，落地页是固定入口。</small></div></div>
+      <div class="ti"><span class="num">5</span><div class="c"><b>保留旧版本下载</b><small>新版出问题用户要能回滚。Release 别删，标成 Pre-release 归档即可。</small></div></div>
+    </div>
+
+    <div class="tl" style="margin-top:28px">
+      <div class="tp">
+        <div class="w">第 1 周</div>
+        <div class="h">开源三件套 + 酷安</div>
+        <div class="d">GitHub Release 规范化（版本号、SHA-256、更新日志）→ F-Droid 提交 → IzzyOnDroid 提交 → 酷安开发者认证并上架。同时<b>把软著材料递出去</b>，这是唯一要等 1–2 个月的事，越早越好。</div>
+      </div>
+      <div class="tp">
+        <div class="w">第 2–4 周</div>
+        <div class="h">内容三连发</div>
+        <div class="d">V2EX「分享创造」→ 隔 3 天 HelloGitHub 自荐 → 再隔 3 天小众软件投稿。B 站发一条 30 秒演示。音频类同步去耳机大家坛发实测帖。<b>错开 3–5 天，避免同一批人重复刷到。</b></div>
+      </div>
+      <div class="tp">
+        <div class="w">第 2–3 月</div>
+        <div class="h">软著下来，补国内商店</div>
+        <div class="d">华为先提（个人最友好），过了再提小米 → OPPO → vivo → 荣耀 → 应用宝。<b>一次只提一个</b>，上一个的驳回理由可以直接用来修下一个。海外 Google Play 同期开。</div>
+      </div>
+      <div class="tp">
+        <div class="w">持续</div>
+        <div class="h">影视类单独一条线，不共用身份</div>
+        <div class="d">GitHub + Telegram 频道 + 恩山帖子 + 网盘，用独立账号和独立落地页。这条线不追规模，追的是「随时能断掉重来」。</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <b>裁决口径</b>　「立刻做」= 免费、无需资质、一个人一周内能完成且能带来真实下载；「排期做」= 有明确收益但卡在资质（软著）或需要较长审核；「顺手做」= 一次性提交即可，不投入额外精力；「被动」= 平台会自动抓取，无需提交；「砍」= 已停止运营 / 流量枯竭 / 需要预算或团队 / 与你的应用形态不匹配。<br>
+    <b>关于三方小商店</b>　91、PP 助手已停止服务；豌豆荚、UC 应用商店已并入阿里体系，独立入口流量极低；安智、历趣、优亿、华军、多特、手机之家为长尾站，个人开发者提交多无审核响应。国内安卓分发量的 90%+ 集中在华为、小米、OPPO、vivo、荣耀、应用宝六家，其余合计不足 5%——这是「砍」的依据。<br>
+    <b>平台政策提醒</b>　各平台的开发者资质、审核类目和费用会变，提交前以官网最新要求为准。国内商店对个人开发者的资质要求在收紧，软著基本是硬门槛。<br>
+    <b>风险提示</b>　影视聚合类应用的合规风险由发布者自行承担，本页只做渠道层面的说明，不构成合规建议。
+  </div>
+</div>
+
+<script>
+const D = [
+ // ===== 发行 · 国内手机 =====
+ ["华为 AppGallery","国内手机商店","next","个人开发者门槛最低的一家，实名即可注册。软著下来后第一个提，它的驳回理由最具体，能当后面几家的预演。"],
+ ["小米应用商店","国内手机商店","next","装机量国内前三，需软著。工具类过审率不错，但要注意隐私合规声明。"],
+ ["OPPO 软件商店","国内手机商店","next","需软著 + 企业资质或个体户。个人开发者走个体户执照这条路。"],
+ ["vivo 应用商店","国内手机商店","next","同上，审核偏严，工具类要求说明权限用途。"],
+ ["荣耀应用市场","国内手机商店","next","已从华为独立，需要单独提交，别以为提了华为就覆盖了。"],
+ ["三星 Galaxy Store","国内手机商店","cut","国内三星份额不到 1%，投入产出不划算。做海外时再单独考虑。"],
+ // ===== 发行 · 国内三方 =====
+ ["酷安","国内三方商店","now","工具类的第一分发位，社区属性强，用户会真的讨论和反馈。免费认证，是三类应用里唯一必须亲手做的商店。"],
+ ["应用宝","国内三方商店","next","腾讯系，覆盖微信/QQ 内的分发场景。有软著后可提，量不如厂商商店但胜在入口独特。"],
+ ["应用汇","国内三方商店","cut","仍在运营但流量极小，提交后基本没有自然下载。"],
+ ["阿里应用分发","国内三方商店","cut","整合了豌豆荚和 UC，实际是后台投放平台，个人开发者没有自助入口。"],
+ ["豌豆荚","国内三方商店","cut","被阿里收购后独立品牌弱化，应用商店入口流量已枯竭。"],
+ ["360 手机助手","国内三方商店","cut","360 移动端整体收缩，商店流量大幅萎缩，投入产出比过低。"],
+ ["百度手机助手","国内三方商店","cut","百度已退出应用分发主战场，入口仍在但几乎无量。"],
+ ["91 手机助手","国内三方商店","cut","已停止服务。"],
+ ["PP 助手","国内三方商店","cut","已停止运营。"],
+ ["安智市场","国内三方商店","cut","长尾站，个人提交多无审核响应。"],
+ ["搜狗手机助手","国内三方商店","cut","搜狗并入腾讯后该产品线已边缘化。"],
+ ["UC 应用商店","国内三方商店","cut","已并入阿里应用分发体系，无独立提交入口。"],
+ ["历趣 / 优亿市场","国内三方商店","cut","长尾小站，SEO 流量为主，几乎没有真实下载转化。"],
+ ["华军软件园 / 多特软件站","国内三方商店","cut","PC 软件下载站，安卓应用无有效入口，用户画像也不匹配。"],
+ ["手机之家","国内三方商店","cut","已转型媒体，不再做应用分发。"],
+ // ===== 发行 · 国外 =====
+ ["Google Play","国外商店","next","唯一值得投入的海外商店。工具类过审几乎无门槛，一次性注册费。但对你国内为主的三类应用来说只是增量，不是主渠道。"],
+ ["三星 Galaxy Store（海外）","国外商店","later","海外三星装机量不小，但需要单独适配和提审流程，等 Google Play 跑通再说。"],
+ ["小米 GetApps（海外）","国外商店","later","主要覆盖印度、东南亚，和你当前用户画像重合度低。"],
+ ["Amazon Appstore","国外商店","cut","量小且需单独适配 Fire 设备，投入产出不成立。"],
+ ["QooApp","国外商店","cut","日韩二次元游戏分发，工具类完全不匹配。"],
+ ["F-Droid","国外商店","now","你已开源，这是必做项。硬门槛：FOSS 许可证 + 不依赖 GMS/Firebase 等专有组件。由 F-Droid 自行构建，你只管提交源码。"],
+ ["IzzyOnDroid","国外商店","now","F-Droid 的补充仓库，接受闭源和带 GMS 的应用，只要 GitHub 有 Release。免费，审核快。两个都提，互不冲突。"],
+ ["GitHub Releases","国外商店","now","所有渠道的源头。没有规范化的 Release，IzzyOnDroid 和其他收录站都不会收你。"],
+ ["APKPure","国外三方","passive","爬虫自动抓 Google Play 和 GitHub 的包上架，不需要手动提交。可注册开发者后台认领，但优先级极低。"],
+ ["Uptodown","国外三方","passive","同样是自动收录，手动提交反而慢。"],
+ ["Aptoide","国外三方","passive","自动抓取 + 用户可自建商店，无需主动提交。"],
+ ["APKMirror","国外三方","cut","只收知名应用和系统级 APK，个人新包进不去，别浪费时间。"],
+ ["SourceForge","国外三方","later","如果你做 Windows 版，这里是老牌分发位。纯安卓 APK 不必。"],
+ // ===== ASO =====
+ ["七麦数据","ASO 工具","later","免费版足够看关键词排名和竞品下载量估算。不是渠道，是看板。"],
+ ["点点数据","ASO 工具","later","同七麦，免费额度可用。两个选一个就够，别都注册。"],
+ ["ASO114","ASO 工具","cut","已被边缘化，数据更新滞后。"],
+ ["蝉大师","ASO 工具","cut","核心功能已并入其他产品线，个人使用价值低。"],
+ ["AppGrowing","ASO 工具","cut","这是广告投放监测工具，不是 ASO，和你的需求无关。"],
+ ["Sensor Tower","ASO 工具","cut","企业级年费产品，个人开发者完全不需要。"],
+ ["data.ai","ASO 工具","cut","同上，且已并入 Sensor Tower 体系。"],
+ ["Mobile Action","ASO 工具","cut","企业级，付费门槛高。"],
+ ["AppTweak","ASO 工具","cut","企业级，按年订阅。"],
+ // ===== 推广 · 社区 =====
+ ["小众软件","推广 · 推荐","now","接受作者自荐，长尾流量好。适合「解决一个具体小问题」的工具，写清楚痛点和用法即可。"],
+ ["V2EX","推广 · 论坛","now","「分享创造」节点是自荐主战场。一篇帖能吃半年搜索长尾，但别只贴链接，要讲清为什么做。"],
+ ["LINUX DO","推广 · 论坛","now","你导图里没列，但这类工具讨论热度比 V2EX 还高，发帖容忍度也更宽松。"],
+ ["HelloGitHub","推广 · 推荐","now","中文开源圈曝光最强的一站，只收开源项目——你刚好符合。有官方自荐入口。"],
+ ["B 站","推广 · 视频","now","30 秒演示胜过任何文案。工具类装机/教程内容转化最高，且视频能被长期搜索到。"],
+ ["自己的公众号","推广 · 私域","later","资产是自己的，但从零起号周期长。等有第一批种子用户后再做，用来做留存而不是拉新。"],
+ ["机锋网","推广 · 论坛","cut","安卓早期论坛，已衰落，日活极低。"],
+ ["Product Hunt","推广 · 推荐","later","只对海外有效。国内为主的话优先级低，等 Google Play 有起色再发。"],
+ ["少数派","推广 · 媒体","later","质量高但投稿门槛高，需要写出产品故事而不只是功能介绍。有把握时再投。"],
+ ["掘金","推广 · 社区","later","技术文带项目链接，适合有技术亮点的项目。量中等。"],
+ ["CSDN","推广 · 社区","later","SEO 长尾流量大，但内容质量要求低、同质化严重。可以批量铺但不指望转化。"],
+ ["开源中国","推广 · 社区","later","开源项目可发资讯，量不大但精准。"],
+ ["奇客 Solidot","推广 · 媒体","later","科技资讯站，接受投稿，被采纳后有稳定长尾。"],
+ ["AppSo","推广 · 媒体","cut","已整合进爱范儿体系，独立投稿通道关闭，且偏好消费级应用。"],
+ ["吾爱破解","推广 · 论坛","later","流量真实，但需要账号等级才能发原创区，前期养号成本高。"],
+ ["海阔小棉袄 / 哎呦不错 / 不死鸟","推广 · 资源站","later","国内独立开发者常用的软件推荐站，SEO 长尾有效，一次性提交即可。"],
+ ["小红书","推广 · 视频","later","更适合生活方式类应用，工具类偏弱。有余力再做。"],
+ ["抖音","推广 · 视频","cut","工具类在抖音极难起量，需要强钩子内容和持续投入，个人做不动。"],
+ ["Telegram","推广 · 私域","now","影视/TVBox 类的必备基建，版本推送和失效公告的唯一可靠通道。工具类可选。"],
+ ["恩山无线论坛","推广 · 论坛","next","影视/盒子类用户最集中的中文论坛。工具类无关，影视类必做。"],
+ ["X / Twitter","推广 · 海外","later","海外发布主阵地，国内为主时优先级低。有英文内容再开。"],
+ ["YouTube","推广 · 海外","later","海外视频演示，同上。"],
+ ["Discord","推广 · 海外","later","海外社区沉淀，用户量起来后再建。"],
+ ["LinkedIn","推广 · 海外","cut","B 端职业社交，工具类个人项目无效。"],
+ ["Instagram","推广 · 海外","cut","视觉化产品展示，与工具类不匹配。"],
+ // ===== 付费 =====
+ ["信息流广告（广点通/巨量/快手磁力/百度）","推广 · 付费","cut","起投几千到几万，工具类 ARPU 接近零，买来的用户不付费不留存。你备注里的「小预算测试」在这个品类不成立。"],
+ ["搜索广告（百度/搜狗/360）","推广 · 付费","cut","同上。工具类关键词 CPC 不低，但没有承接转化的付费模型。"],
+ ["联盟广告（穿山甲/优量汇/百度联盟）","推广 · 付费","cut","这是给有广告变现能力的 App 做投放的，你是被投放方不是投放方。"],
+ ["积分墙 / 应用墙","推广 · 付费","cut","刷量性质，商店会判定异常，得不偿失。"],
+ ["厂商广告联盟","推广 · 付费","cut","需要企业资质和预算门槛，个人进不去。"],
+ ["KOL / 开发者 / B 端合作","推广 · 合作","later","有用户量之后再谈。现在没有可交换的价值。"],
+ ["预装与硬件合作","推广 · 合作","cut","需要企业资质和商务团队，个人完全够不到。"],
+ ["地推 / 门店 / 展会","推广 · 付费","cut","获客成本极高，和工具类用户完全不匹配。"],
+ // ===== 代码托管 / 其他 =====
+ ["Gitee 码云","代码托管","later","国内镜像，能加速国内下载。GitHub 被墙严重时是备选，日常不必同步维护。"],
+ ["GitLab","代码托管","cut","除非你要用它的 CI，否则多一个仓库只是多一份维护成本。"],
+ ["GitCode","代码托管","cut","镜像站，无自然流量，纯增加负担。"],
+ ["Microsoft Store","其他商店","later","只在你做 Windows 版时才有意义。"],
+ ["Steam","其他商店","later","只在你做 PC 游戏时才有意义。"],
+ ["Chrome 应用商店","其他商店","later","只在你做浏览器扩展时才有意义。"],
+ ["Edge 加载项商店","其他商店","later","同上。扩展类可和 Chrome 一起提，几乎零成本。"],
+ ["Firefox Add-ons","其他商店","later","同上，三家里审核最快。"],
+ ["uTools 插件市场","其他商店","later","只在你做 uTools 插件时才有意义，是一个被低估的小流量入口。"],
+ ["skills.sh","其他商店","cut","Claude Skills 目录，和安卓 APK 无关。"],
+ // ===== 推荐榜 / 赞赏 =====
+ ["Trendshift","推荐 / 收录","passive","按 star 增速自动收录，不用提交。"],
+ ["新趣集","推荐 / 收录","later","国内产品发布站，独立开发者常用，量小但精准。"],
+ ["GitHub Sponsors","赞赏 / 变现","later","零成本开通，开了不亏，但工具类实际收入预期要放低。"],
+ ["爱发电","赞赏 / 变现","later","国内可用，同上。"],
+ ["Open Collective","赞赏 / 变现","cut","需要公开财务透明账本，个人项目没必要。"],
+ ["Patreon","赞赏 / 变现","cut","国内用户几乎不用，开通也是空的。"]
+];
+
+const VLABEL = {now:'立刻做', next:'排期做', later:'顺手做', passive:'被动', cut:'砍'};
+const VC = {now:'now', next:'next', later:'later', passive:'passive', cut:'cut'};
+
+let ST = {v:'all', q:''};
+
+/* ---- 数字 ---- */
+const nNow = D.filter(x=>x[2]==='now').length;
+const nNext = D.filter(x=>x[2]==='next').length;
+const setT = (id,v)=>{const e=document.getElementById(id); if(e) e.textContent=v;};
+setT('nTotal', D.length); setT('nNow', nNow);
+setT('bnTotal', D.length); setT('bnNow', nNow); setT('bnNext', nNext);
+setT('bnRest', D.length - nNow - nNext);
+setT('pct', Math.round(nNow/D.length*100*10)/10 + '%');
+
+/* ---- chips ---- */
+const counts = {all:D.length};
+['now','next','later','passive','cut'].forEach(v=>counts[v]=D.filter(x=>x[2]===v).length);
+const order = ['all','now','next','later','passive','cut'];
+document.getElementById('chips').innerHTML = order.map(v=>
+  `<button class="chip${v==='all'?' on':''}" data-v="${v}">${v==='all'?'全部':VLABEL[v]}<span class="n">${counts[v]}</span></button>`
+).join('');
+
+document.getElementById('chips').addEventListener('click', e=>{
+  const b = e.target.closest('.chip'); if(!b) return;
+  ST.v = b.dataset.v;
+  document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on', x===b));
+  render();
+});
+document.getElementById('q').addEventListener('input', e=>{
+  ST.q = e.target.value.trim().toLowerCase(); render();
+});
+
+function render(){
+  const list = D.filter(([n,c,v,w])=>{
+    if(ST.v!=='all' && v!==ST.v) return false;
+    if(ST.q && !(n+c+w).toLowerCase().includes(ST.q)) return false;
+    return true;
+  });
+  document.getElementById('empty').classList.toggle('hide', list.length>0);
+  document.getElementById('rows').innerHTML = list.map(([n,c,v,w])=>
+    `<div class="tr">
+      <div class="nm">${n}</div>
+      <div class="ct">${c}</div>
+      <div><span class="v ${VC[v]}">${VLABEL[v]}</span></div>
+      <div class="wy">${w}</div>
+    </div>`
+  ).join('');
+}
+render();
+
+/* ---- 顶栏吸顶 + 当前节高亮 ---- */
+const nav = document.getElementById('nav');
+const links = [...nav.querySelectorAll('a')];
+const secs = links.map(a=>document.querySelector(a.getAttribute('href')));
+
+function onScroll(){
+  nav.classList.toggle('stuck', window.scrollY > 60);
+  let idx = 0;
+  secs.forEach((s,i)=>{ if(s && s.getBoundingClientRect().top <= 140) idx = i; });
+  links.forEach((a,i)=>a.classList.toggle('on', i===idx));
+}
+window.addEventListener('scroll', onScroll, {passive:true});
+onScroll();
+</script>
+</body>
+</html>
